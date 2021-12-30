@@ -373,7 +373,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         return self.camera_img_size
 
     def take_action(self, action):
-        self.send_control(action[0], action[1])
+        self.send_control(action[0], action[1], action[2])
 
     def observe(self):
         while self.last_received == self.time_received:
@@ -556,14 +556,14 @@ class DonkeyUnitySimHandler(IMesgHandler):
             else:
                 raise ValueError(f"Scene name {self.SceneToLoad} not in scene list {names}")
 
-    def send_control(self, steer, throttle):
+    def send_control(self, steer, throttle, brake):
         if not self.loaded:
             return
         msg = {
             "msg_type": "control",
             "steering": steer.__str__(),
             "throttle": throttle.__str__(),
-            "brake": "0.0",
+            "brake": brake.__str__(),
         }
         self.queue_message(msg)
 
