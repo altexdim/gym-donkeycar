@@ -124,6 +124,15 @@ class DonkeyEnv(gym.Env):
             observation, reward, done, info = self.viewer.observe()
         return observation, reward, done, info
 
+    def step_action(self, action):
+        for i in range(self.frame_skip):
+            self.viewer.take_action(action)
+
+    def step_observe(self):
+        for i in range(self.frame_skip):
+            observation, reward, done, info = self.viewer.observe()
+        return observation, reward, done, info
+
     def reset(self):
         self.viewer.reset()
         observation, reward, done, info = self.viewer.observe()

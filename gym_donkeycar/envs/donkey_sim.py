@@ -91,6 +91,8 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.last_obs = self.image_array
         self.time_received = time.time()
         self.last_received = self.time_received
+        self.last_sent_time = time.time()
+        self.last_sent_action = [0.0, 0.0, 0.0]
         self.hit = "none"
         self.cte = 0.0
         self.x = 0.0
@@ -344,6 +346,8 @@ class DonkeyUnitySimHandler(IMesgHandler):
         self.last_obs = self.image_array
         self.time_received = time.time()
         self.last_received = self.time_received
+        self.last_sent_time = time.time()
+        self.last_sent_action = [0.0, 0.0, 0.0]
         self.hit = "none"
         self.cte = 0.0
         self.x = 0.0
@@ -373,7 +377,13 @@ class DonkeyUnitySimHandler(IMesgHandler):
         return self.camera_img_size
 
     def take_action(self, action):
+        while (self.last_sent_action == action) and ((time.time() - self.last_sent_time) < 0.05):
+            time.sleep(0.001)
+            return
+
         self.send_control(action[0], action[1], action[2])
+        self.last_sent_time = time.time()
+        self.last_sent_action = action
 
     def observe(self):
         while self.last_received == self.time_received:
