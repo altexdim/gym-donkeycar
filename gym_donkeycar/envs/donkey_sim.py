@@ -46,7 +46,7 @@ class DonkeyUnitySimContoller:
     def wait_until_loaded(self):
         while not self.handler.loaded:
             logger.warning("waiting for sim to start..")
-            time.sleep(3.0)
+            time.sleep(0.1)
 
     def reset(self):
         self.handler.reset()
@@ -340,7 +340,7 @@ class DonkeyUnitySimHandler(IMesgHandler):
         logger.debug("reseting")
         self.send_reset_car()
         self.timer.reset()
-        time.sleep(1)
+        time.sleep(0.1)
         self.image_array = np.zeros(self.camera_img_size)
         self.image_array_b = None
         self.last_obs = self.image_array
